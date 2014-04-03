@@ -6,6 +6,7 @@ import (
 	"github.com/divan/gorilla-xmlrpc/xml"
 	"log"
 	"net/http"
+	"flag"
 	"os"
 )
 
@@ -31,11 +32,25 @@ func XmlRpcCall(method string, args MessageArgs) (reply MessageReply, err error)
 	return
 }
 
+func usage() {
+	fmt.Fprintf(os.Stderr, "usage: %s [message]\n", os.Args[0])
+	flag.PrintDefaults()
+	os.Exit(2)
+}
+
 func main() {
-	args := MessageArgs{os.Args[1]}
+	msg := flag.String("m", "", "message string")
+	flag.Usage = usage
+	flag.Parse()
+
+	if len(*msg) == 0 {
+		usage()
+	}
+
+	msgargs := MessageArgs{*msg}
 	var reply MessageReply
 
-	reply, err := XmlRpcCall("MessageService.Send", args)
+	reply, err := XmlRpcCall("MessageService.Send", msgargs)
 	if err != nil {
 		log.Fatal(err)
 	}
