@@ -40,7 +40,7 @@ func usage() {
 }
 
 func main() {
-	msg := flag.String("m", "", "message string")
+	msg := flag.String("m", "", "message string test")
 	hostname := flag.String("h", "localhost", "server address")
 	port := flag.Int("p", 8000, "port")
 	flag.Usage = usage
